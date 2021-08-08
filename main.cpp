@@ -4,7 +4,7 @@
 
 int main()
 {
-	memory::process proc(L"LeagueClientUx.exe");
+	memory::process proc(L"notepad.exe");
 	if (proc.open()) {
 		wprintf(L"Succesfully opened %s (%d)\n", proc.name.c_str(), proc.id);
 

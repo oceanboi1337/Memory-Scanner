@@ -7,6 +7,8 @@ bool memory::process::crt_inject(const std::wstring& dll)
 		perror("[ERROR]: Failed to allocate memory.");
 		return false;
 	}
+
+	return true;
 }
 
 bool memory::process::inject(const std::wstring& dll, memory::injection_method method)
@@ -16,7 +18,7 @@ bool memory::process::inject(const std::wstring& dll, memory::injection_method m
 	case memory::injection_method::CRT:
 		return this->crt_inject(dll);
 	default:
-		break;
+		return false;
 	}
 
 	return false;

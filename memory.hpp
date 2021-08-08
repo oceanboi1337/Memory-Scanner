@@ -23,7 +23,7 @@ namespace memory
 		uintptr_t size;
 	} module;
 
-	enum injection_method { CRT, MANUAL };
+	enum class injection_method { CRT, MANUAL };
 
 	class process
 	{
@@ -65,16 +65,13 @@ namespace memory
 			std::vector<uintptr_t> results;
 
 			for (const auto& region : this->memory_regions()) {
-				unsigned char* buffer = (unsigned char*)malloc(region.size);
-				if (buffer == NULL) continue;
 
-				memset(buffer, 0, region.size);
+				unsigned char* buffer = new unsigned char[region.size];
 				ReadProcessMemory(this->handle, (void*)region.start, buffer, region.size, NULL);
 
 				size_t size = sizeof(T);
-
-				for (int i = 0; i < region.size; i += size) {
-					if (memcmp(buffer + i, &value, size) == 0) {
+				for (size_t i = 0; i < region.size; i += size) {
+					if (memcmp((void*)(buffer + i), &value, size) == 0) {
 						results.push_back(region.start + i);
 					}
 				}
